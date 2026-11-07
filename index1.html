@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Spot — Smart Library Seat Booking System</title>
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ================= STAGE 1: AUTHENTICATION SCREEN ================= -->
+    <div id="auth-screen" class="auth-screen">
+        <div class="auth-backdrop"></div>
+        <div class="auth-layout-container">
+            <div class="auth-showcase-panel">
+                <div class="auth-brand-badge"><span>🏛️</span> Academic Heritage</div>
+                <h1 class="auth-main-title">Smart Library <span class="accent-gold">Seat Booking</span></h1>
+                <p class="auth-main-subtext">Secure your ideal study spot in advance. Experience a distraction-free, tech-enabled academic sanctuary.</p>
+                
+                <div class="quote-card--glass">
+                    <span class="quote-mark">“</span>
+                    <p class="quote-body" id="auth-quote-text">Small steps every day lead to extraordinary achievements.</p>
+                    <p class="quote-author" id="auth-quote-author">— Academic Focus Archive</p>
+                    <button type="button" class="btn-text-action" id="auth-quote-refresh-btn"><span>🔄</span> Show Another Quote</button>
+                </div>
+            </div>
+
+            <div class="auth-card-panel">
+                <div class="glass-card login-box">
+                    <div class="login-box-header">
+                        <h2 class="card-heading">Sign In</h2>
+                        <p class="card-subheading">Enter your university credentials to access the library portal.</p>
+                    </div>
+
+                    <div id="auth-alert-box" class="form-alert-box alert--error hidden"></div>
+
+                    <form id="login-form" class="auth-form" novalidate>
+                        <div class="form-group">
+                            <label class="form-label" for="login-identifier">Registration ID / Email</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">👤</span>
+                                <input type="text" id="login-identifier" class="form-control" placeholder="e.g., 12310001" required>
+                            </div>
+                            <span class="input-error-msg" id="identifier-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-row">
+                                <label class="form-label" for="login-password">Password</label>
+                                <button type="button" id="forgot-password-link" class="link-muted-btn">Forgot?</button>
+                            </div>
+                            <div class="input-wrapper">
+                                <span class="input-icon">🔒</span>
+                                <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                                <button type="button" id="toggle-password-btn" class="password-toggle-btn" aria-label="Toggle password visibility">
+                                    <span id="toggle-password-icon">👁️</span>
+                                </button>
+                            </div>
+                            <span class="input-error-msg" id="password-error"></span>
+                        </div>
+
+                        <div class="auth-action-stack">
+                            <button type="submit" class="btn btn--primary btn--full">Sign In to Dashboard</button>
+                            <button type="button" id="guest-access-btn" class="btn btn--secondary btn--full">Explore as Guest</button>
+                        </div>
+                    </form>
+
+                    <div class="demo-credential-tip"
+                        💡 <strong>Demo Tip:</strong> Type any ID and password (min 5 chars) or click <strong>Explore as Guest</strong>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= STAGE 2: APPLICATION DASHBOARD ================= -->
+    <div id="app-root" class="app-root hidden" aria-hidden="true">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-container">
+                <a href="#hero" class="app-brand">
+                    <span class="brand-logo-symbol">📚</span>
+                    <div class="brand-text-group">
+                        <span class="brand-primary-text">StudySpot</span>
+                        <span class="brand-sub-badge">Central Library</span>
+                    </div>
+                </a>
+
+                <nav class="app-nav">
+                    <ul class="nav-links-list">
+                        <li><a href="#hero" class="nav-link active" data-target="hero">Overview</a></li>
+                        <li><a href="#book" class="nav-link" data-target="book">Book Seat</a></li>
+                        <li><a href="#my-bookings" class="nav-link" data-target="my-bookings">My Passes (<span id="nav-booking-badge">0</span>)</a></li>
+                        <li><a href="#amenities" class="nav-link" data-target="amenities">Amenities</a></li>
+                    </ul>
+                </nav>
+
+                <div class="nav-user-controls">
+                    <div class="user-profile-badge">
+                        <div class="user-avatar" id="user-avatar-initials">GS</div>
+                        <div class="user-info-text">
+                            <span class="user-name" id="user-display-name">Guest Scholar</span>
+                            <span class="user-status-pill">● Online</span>
+                        </div>
+                    </div>
+                    <button type="button" id="logout-btn" class="btn btn--outline btn--compact">Sign Out</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main-content">
+
+            <!-- Hero Section -->
+            <section id="hero" class="dashboard-hero-section section-container">
+                <div class="hero-content-grid">
+                    <div>
+                        <span class="hero-tagline">Academic Year 2026-27</span>
+                        <h2 class="hero-heading">Welcome back to your <span class="accent-gold">Quiet Zone</span></h2>
+                        <p class="hero-description">Reserve ergonomic desks, high-speed power hubs, and collaborative study pods across Floor 3 in seconds.</p>
+                        <div class="hero-cta-group">
+                            <a href="#book" class="btn btn--primary">Reserve a Desk Now</a>
+                            <a href="#my-bookings" class="btn btn--secondary">View Active Passes</a>
+                        </div>
+                    </div>
+
+                    <div class="hero-metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-icon">🪑</span>
+                                <span class="metric-badge metric-badge--success">Live</span>
+                            </div>
+                            <span class="metric-number" id="metric-available-seats">--</span>
+                            <span class="metric-label">Available Desks</span>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-icon">🏢</span>
+                                <span class="metric-badge">Floor 3</span>
+                            </div>
+                            <span class="metric-number" id="metric-total-seats">24</span>
+                            <span class="metric-label">Total Workstations</span>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-card-header">
+                                <span class="metric-icon">🎟️</span>
+                                <span class="metric-badge metric-badge--accent">Active</span>
+                            </div>
+                            <span class="metric-number" id="metric-user-reservations">0</span>
+                            <span class="metric-label">Your Bookings</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="daily-quote-panel">
+                    <span class="daily-quote-icon">💡</span>
+                    <div class="daily-quote-content">
+                        <span class="daily-quote-label">Daily Focus Insight</span>
+                        <p class="daily-quote-phrase" id="dashboard-quote-text">“Small steps every day lead to extraordinary achievements.”</p>
+                    </div>
+                    <button type="button" id="dashboard-quote-refresh-btn" class="btn--icon-only" title="New Quote">⚡</button>
+                </div>
+            </section>
+
+            <!-- SMART SEAT BOOKING SECTION WITH SLIDER -->
+            <section id="book" class="section-container booking-section">
+                <div class="section-header section-header--with-action">
+                    <div>
+                        <span class="section-badge">Interactive Reservation</span>
+                        <h2 class="section-title">Smart Seat Booking</h2>
+                        <p class="section-subtitle">Select your preferred reading zone, choose an available ergonomic desk, and instantly secure your study slot.</p>
+                    </div>
+                </div>
+
+                <!-- Slider Viewport Container -->
+                <div class="seat-slider-viewport">
+                    <div class="seat-slides-track" id="seatSlidesTrack">
+
+                        <!-- ================= SLIDE 1: SEAT MAP & CONTROLS ================= -->
+                        <div class="seat-slide-pane">
+                            <div class="booking-flow-grid">
+                                <div class="seat-workspace-card">
+                                    <div class="seat-controls-bar">
+                                        <div class="control-field">
+                                            <label class="control-label" for="zone-filter">Library Zone</label>
+                                            <select id="zone-filter" class="control-select">
+                                                <option value="all">All Zones (Floor 3)</option>
+                                                <option value="silent">Deep Silent Zone (Window)</option>
+                                                <option value="pod">Individual Focus Pod</option>
+                                                <option value="collab">Collaborative Cubicle</option>
+                                            </select>
+                                        </div>
+                                        <div class="control-field">
+                                            <label class="control-label" for="reservation-date">Date</label>
+                                            <input type="date" id="reservation-date" class="control-input">
+                                        </div>
+                                        <div class="control-field">
+                                            <label class="control-label" for="reservation-slot">Time Slot</label>
+                                            <select id="reservation-slot" class="control-select">
+                                                <option value="morning">09:00 AM - 12:00 PM (Morning)</option>
+                                                <option value="afternoon" selected>12:30 PM - 03:30 PM (Afternoon)</option>
+                                                <option value="evening">04:00 PM - 07:00 PM (Evening)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="seat-legend-bar">
+                                        <div class="legend-item"><span class="legend-swatch swatch--available"></span><span>Available</span></div>
+                                        <div class="legend-item"><span class="legend-swatch swatch--selected"></span><span>Selected</span></div>
+                                        <div class="legend-item"><span class="legend-swatch swatch--booked"></span><span>Occupied</span></div>
+                                    </div>
+
+                                    <div class="hall-reference-line"><span class="line-pill">MAIN WINDOW AISLE — FLOOR 3</span></div>
+                                    
+                                    <!-- Dynamic Seat Grid Populated by JS -->
+                                    <div id="seat-grid-container" class="seat-grid-container"></div>
+                                    
+                                    <div class="hall-reference-line hall-reference-line--bottom"><span class="line-pill">QUIET STUDY ZONE EXIT</span></div>
+                                </div>
+
+                                <!-- Summary Card on Slide 1 -->
+                                <div class="booking-summary-card">
+                                    <h3 class="summary-card-title">Reservation Summary</h3>
+                                    <p class="summary-card-desc">Review your seating choice before proceeding.</p>
+
+                                    <!-- Empty State -->
+                                    <div id="selection-empty-state" class="selection-empty-state">
+                                        <div class="empty-icon">💺</div>
+                                        <div class="empty-text">No Seat Selected</div>
+                                        <div class="empty-hint">Click on any available desk tile on the map to view details and proceed.</div>
+                                    </div>
+
+                                    <!-- Active Selection Ticket Preview -->
+                                    <div id="selection-details-state" class="selection-details-state hidden">
+                                        <div class="ticket-preview-box">
+                                            <div class="ticket-header">
+                                                <span class="ticket-badge">Selected Desk</span>
+                                                <span class="ticket-seat-pill" id="ticket-seat-number">Desk --</span>
+                                            </div>
+                                            <div class="ticket-body">
+                                                <div class="ticket-detail-item">
+                                                    <span class="detail-label">Zone:</span>
+                                                    <span class="detail-value" id="ticket-zone-name">--</span>
+                                                </div>
+                                                <div class="ticket-detail-item">
+                                                    <span class="detail-label">Amenities:</span>
+                                                    <span class="detail-value" id="ticket-amenity-text">--</span>
+                                                </div>
+                                                <div class="ticket-detail-item">
+                                                    <span class="detail-label">Date:</span>
+                                                    <span class="detail-value" id="ticket-date-text">--</span>
+                                                </div>
+                                                <div class="ticket-detail-item">
+                                                    <span class="detail-label">Time Slot:</span>
+                                                    <span class="detail-value" id="ticket-slot-text">--</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="booking-terms-box">
+                                            <label class="custom-checkbox-container terms-checkbox">
+                                                <input type="checkbox" id="booking-policy-check" checked>
+                                                <span class="checkbox-indicator"></span>
+                                                <span class="checkbox-label">I agree to maintain silence and vacate the desk if unoccupied for 30+ minutes.</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ================= SLIDE 2: BOOK A SEAT CONTENT / FORM ================= -->
+                        <!-- <div class="seat-slide-pane">
+                            <div class="seat-workspace-card" style="max-width: 600px; margin: 0 auto;">
+                                <div class="summary-card-title" style="margin-bottom: 8px;">Confirm Your Reservation Details</div>
+                                <p class="summary-card-desc">Review your booking summary and confirm your seat pass generation.</p>
+                                
+                                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                    <button type="button" class="btn btn--secondary" id="backToMapBtn" style="flex: 1;">← Back to Map</button>
+                                    <button type="button" id="confirm-booking-btn" class="btn btn--primary" style="flex: 1;">Confirm & Generate Pass</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section> -->
+
+            <!-- ================= SLIDE 2: BOOK A SEAT CONTENT / FORM ================= -->
+                        <!-- <div class="seat-slide-pane">
+                            <div class="seat-workspace-card" style="max-width: 600px; margin: 0 auto;">
+                                <div class="summary-card-title" style="margin-bottom: 8px;">Confirm Your Reservation Details</div>
+                                <p class="summary-card-desc">Review your booking summary and confirm your seat pass generation.</p>
+                                
+                                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                    <button type="button" class="btn btn--secondary" id="backToMapBtn" style="flex: 1;">← Back to Map</button>
+                                    <button type="button" id="confirm-booking-btn" class="btn btn--primary" style="flex: 1;">Book a Seat</button>
+                                </div>
+                            </div>
+                        </div> -->
+
+
+                        <!-- ================= SLIDE 2: BOOK A SEAT CONTENT / FORM ================= -->
+                        <div class="seat-slide-pane">
+                            <div class="seat-workspace-card" style="max-width: 600px; margin: 0 auto;">
+                                <div class="summary-card-title" style="margin-bottom: 8px;">Confirm Your Reservation Details</div>
+                                <p class="summary-card-desc">Review your booking summary and confirm your seat pass generation.</p>
+                                
+                                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                    <button type="button" class="btn btn--secondary" id="backToMapBtn" style="flex: 1;">← Back to Map</button>
+                                    <button type="button" id="confirm-booking-btn" class="btn btn--primary" style="flex: 1;">Book a Seat</button>
+                                </div>
+                            </div>
+                        </div>
+            <!-- My Bookings History Section -->
+            <section id="my-bookings" class="section-container bookings-history-section">
+                <div class="section-header">
+                    <span class="section-badge">Active Reservations</span>
+                    <h2 class="section-title">My Library Passes</h2>
+                    <p class="section-subtitle">Manage your upcoming workstation bookings or cancel passes if plans change.</p>
+                </div>
+
+                <div id="no-bookings-placeholder" class="empty-bookings-box">
+                    <div class="empty-graphic">🎟️</div>
+                    <h3 class="empty-title">No Active Reservations</h3>
+                    <p class="empty-subtitle">You haven't booked any study desks yet. Choose a seat from the interactive floor map above.</p>
+                    <a href="#book" class="btn btn--primary btn--compact">Browse Desks</a>
+                </div>
+
+                <div id="active-passes-grid" class="active-passes-grid hidden"></div>
+            </section>
+
+            <!-- Library Info & Amenities Section -->
+            <section id="amenities" class="section-container library-info-section">
+                <div class="section-header">
+                    <span class="section-badge">Facilities & Infrastructure</span>
+                    <h2 class="section-title">Campus Library Amenities</h2>
+                    <p class="section-subtitle">Designed to provide optimal academic focus with world-class facilities.</p>
+                </div>
+
+                <div class="info-cards-grid">
+                    <div class="info-card">
+                        <div class="info-card-icon">⚡</div>
+                        <h3 class="info-card-title">Power & Connectivity</h3>
+                        <ul class="info-list">
+                            <li><strong>Fast Wi-Fi 6:</strong> Dedicated academic gigabit subnet.</li>
+                            <li><strong>Power Outlets:</strong> Universal 230V + USB-C fast charging at every desk.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card-icon">☕</div>
+                        <h3 class="info-card-title">Refreshment & Break Cafe</h3>
+                        <ul class="info-list">
+                            <li><strong>Beverages:</strong> Artisan coffee & fresh juice kiosk on Floor 3 corridor.</li>
+                            <li><strong>Lounge:</strong> Quiet breakout reading area.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card-icon">🔒</div>
+                        <h3 class="info-card-title">Security & Lockers</h3>
+                        <ul class="info-list">
+                            <li><strong>Smart Lockers:</strong> Secure RFID luggage and laptop lockers near entrance.</li>
+                            <li><strong>Access:</strong> University ID card mandatory for entry.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-container">
+                <div>
+                    <div class="footer-brand">
+                        <span class="brand-logo-symbol">📚</span>
+                        <span class="footer-title">StudySpot Library System</span>
+                    </div>
+                    <p class="footer-blurb">Advanced smart seating management designed for academic excellence and focused scholarship.</p>
+                    <p class="footer-disclaimer">© 2026 Academic Infrastructure Initiative. All rights reserved.</p>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading">Quick Navigation</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="#hero">Overview</a></li>
+                        <li><a href="#book">Smart Booking Map</a></li>
+                        <li><a href="#my-bookings">Active Passes</a></li>
+                        <li><a href="#amenities">Library Amenities</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading">System Specs</h4>
+                    <ul class="footer-tech-list">
+                        <li>Engine: Vanilla JavaScript & CSS3</li>
+                        <li>Persistence: Session & LocalStorage</li>
+                        <li>Accessibility: WCAG 2.1 AA Compliant</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom-bar">
+                <div class="footer-bottom-container">
+                    <span>Study Spot v3.4 — Production Release</span>
+                    <a href="#hero" class="back-to-top-link">Back to Top ↑</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Script File -->
+    <script src="script1.js"></script>
+</body>
+</html>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
